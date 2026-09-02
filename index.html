@@ -226,6 +226,9 @@
   .dev-link:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
   @media (max-width: 1024px) { .menu-toggle { display: flex; } .topbar .search-global { display: none; } .sidebar { position: fixed; left: 0; top: 0; width: 280px; max-width: 85vw; box-shadow: var(--shadow-lg); } }
   @media (max-width: 640px) { .main-content { padding: 1rem; } .page-title-main { font-size: 1.5rem; } .stat-value { font-size: 2rem; } .auth-card { padding: 1.5rem; } .chat-input-row { flex-direction: column; align-items: stretch; } .send-btn { width: 100%; border-radius: var(--radius); } .chat-tools { justify-content: center; } }
+  .back-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--panel); border: 1px solid var(--border); color: var(--muted); border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: var(--transition); margin-bottom: 1rem; }
+  .back-btn:hover { color: var(--accent); border-color: var(--accent); background: rgba(124,92,255,0.1); }
+  .back-btn svg { width: 18px; height: 18px; }
 </style>
 </head>
 <body>
@@ -291,9 +294,38 @@
       <!-- AI MENTOR CHAT -->
       <section class="page" id="page-chat" role="main" aria-label="AI Mentor Chat">
         <div class="chat-layout glass-strong" style="border-radius: var(--radius); overflow: hidden; height: calc(100vh - 140px); min-height: 600px;">
-          <aside class="chat-sidebar" id="chatSidebar"><div class="p-4 border-b" style="border-color: var(--border);"><div class="flex items-center justify-between"><h3 class="font-semibold">Conversations</h3><button class="btn btn-primary text-sm px-3 py-1.5" onclick="Chat.newSession()">New Chat</button></div></div><div class="flex-1 overflow-y-auto p-3 space-y-1" id="chatHistoryList"></div><div class="p-4 border-t" style="border-color: var(--border);"><div class="text-xs" style="color: var(--muted);">Free Tier: <span id="chatLimitInfo">6 messages/session</span></div></div></aside>
-          <div class="chat-main flex flex-col"><div class="messages-area" id="messagesArea" role="log" aria-live="polite" aria-label="Chat Messages"></div>
-            <div class="chat-input-area"><div class="chat-input-wrapper"><div id="attachmentPreview" class="attachment-preview" style="display: none;"></div><div class="chat-input-row"><textarea id="chatTextarea" placeholder="Ask your AI Mentor... (Shift+Enter for new line)" rows="1" aria-label="Chat Input" onkeydown="Chat.handleKeydown(event)"></textarea><button class="send-btn interactive" id="chatSendBtn" onclick="Chat.send()" aria-label="Send Message"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div><div class="chat-tools"><div class="flex flex-wrap gap-2"><button class="tool-btn" onclick="Chat.attachFile()"><svg><polyline points="16 18 22 12 16 6"/><path d="M8 14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg> Attach Resume</button><button class="tool-btn" onclick="Chat.quickPrompt('Analyze my resume and identify my top 3 skill gaps.')"><svg><circle cx="12" cy="12" r="3"/></svg> Skill Gaps</button><button class="tool-btn" onclick="Chat.quickPrompt('Start a mock interview with me for an Associate Technical Engineer role.')"><svg><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Mock Interview</button></div><div id="chatUsageWarn" class="text-xs" style="color: var(--danger); display:none;">Free limit reached. Upgrade for unlimited.</div></div></div></div></div>
+          <aside class="chat-sidebar" id="chatSidebar">
+            <div class="p-4 border-b" style="border-color: var(--border);">
+              <div class="flex items-center justify-between">
+                <h3 class="font-semibold">Conversations</h3>
+                <button class="btn btn-primary text-sm px-3 py-1.5" onclick="Chat.newSession()">New Chat</button>
+              </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-3 space-y-1" id="chatHistoryList"></div>
+            <div class="p-4 border-t" style="border-color: var(--border);">
+              <div class="text-xs" style="color: var(--muted);">Free Tier: <span id="chatLimitInfo">6 messages/session</span></div>
+            </div>
+          </aside>
+          <div class="chat-main flex flex-col">
+            <div class="messages-area" id="messagesArea" role="log" aria-live="polite" aria-label="Chat Messages"></div>
+            <div class="chat-input-area">
+              <div class="chat-input-wrapper">
+                <div id="attachmentPreview" class="attachment-preview" style="display: none;"></div>
+                <div class="chat-input-row">
+                  <textarea id="chatTextarea" placeholder="Ask your AI Mentor... (Shift+Enter for new line)" rows="1" aria-label="Chat Input" onkeydown="Chat.handleKeydown(event)"></textarea>
+                  <button class="send-btn interactive" id="chatSendBtn" onclick="Chat.send()" aria-label="Send Message"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+                </div>
+                <div class="chat-tools">
+                  <div class="flex flex-wrap gap-2">
+                    <button class="tool-btn" onclick="Chat.attachFile()"><svg><polyline points="16 18 22 12 16 6"/><path d="M8 14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg> Attach Resume</button>
+                    <button class="tool-btn" onclick="Chat.quickPrompt('Analyze my resume and identify my top 3 skill gaps.')"><svg><circle cx="12" cy="12" r="3"/></svg> Skill Gaps</button>
+                    <button class="tool-btn" onclick="Chat.quickPrompt('Start a mock interview with me for an Associate Technical Engineer role.')"><svg><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Mock Interview</button>
+                  </div>
+                  <div id="chatUsageWarn" class="text-xs" style="color: var(--danger); display:none;">Free limit reached. Upgrade for unlimited.</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -313,8 +345,32 @@
       <section class="page" id="page-interview" role="main" aria-label="Mock Interview">
         <header class="page-header"><h2 class="page-title-main">AI Mock Interview</h2><p class="page-subtitle">Practice with an interactive AI interviewer. Responses scored using STAR criteria.</p></header>
         <div class="feature-card glass" style="max-width: 900px;">
-          <div id="interviewSetup"><h3 class="font-semibold text-lg mb-4">Select Interview Track</h3><select id="interviewType" class="input-field" style="max-width: 400px;"><option value="Associate Technical Support / L1 Engineer">Associate Technical Support / L1 Engineer</option><option value="Software Developer (Frontend / Backend)">Software Developer (Frontend / Backend)</option><option value="Customer Operations / Process Specialist">Customer Operations / Process Specialist</option><option value="Data Analyst / SQL Specialist">Data Analyst / SQL Specialist</option><option value="General HR & Behavioral Round">General HR & Behavioral Round</option></select><br><br><button class="btn btn-primary" id="btnStartInt" onclick="Interview.start()">Start Interview</button></div>
-          <div id="interviewArea" style="display:none"><div class="eyebrow" style="color:var(--accent-2); text-transform:uppercase; letter-spacing:2px; font-size:11px; font-weight:700; margin-bottom:12px;">Active Question</div><div id="interviewQuestion" class="interview-question"></div><textarea id="interviewAnswer" class="answer-box" placeholder="Type your answer here... Use STAR format (Situation, Task, Action, Result)."></textarea><br><div style="display:flex; gap:10px; margin-top:1rem;"><button class="btn btn-primary" id="btnSubAnswer" onclick="Interview.evaluate()">Submit Answer</button><button class="btn btn-secondary" id="btnNextInt" style="display:none" onclick="Interview.start()">Next Question →</button></div><div id="interviewFeedback" style="margin-top:25px"></div></div>
+          <!-- BACK BUTTON ADDED HERE -->
+          <button class="back-btn" onclick="navigate('dashboard')"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back to Dashboard</button>
+
+          <div id="interviewSetup">
+            <h3 class="font-semibold text-lg mb-4">Select Interview Track</h3>
+            <select id="interviewType" class="input-field" style="max-width: 400px;">
+              <option value="Associate Technical Support / L1 Engineer">Associate Technical Support / L1 Engineer</option>
+              <option value="Software Developer (Frontend / Backend)">Software Developer (Frontend / Backend)</option>
+              <option value="Customer Operations / Process Specialist">Customer Operations / Process Specialist</option>
+              <option value="Data Analyst / SQL Specialist">Data Analyst / SQL Specialist</option>
+              <option value="General HR & Behavioral Round">General HR & Behavioral Round</option>
+            </select>
+            <br><br>
+            <button class="btn btn-primary" id="btnStartInt" onclick="Interview.start()">Start Interview</button>
+          </div>
+          <div id="interviewArea" style="display:none">
+            <div class="eyebrow" style="color:var(--accent-2); text-transform:uppercase; letter-spacing:2px; font-size:11px; font-weight:700; margin-bottom:12px;">Active Question</div>
+            <div id="interviewQuestion" class="interview-question"></div>
+            <textarea id="interviewAnswer" class="answer-box" placeholder="Type your answer here... Use STAR format (Situation, Task, Action, Result)."></textarea>
+            <br>
+            <div style="display:flex; gap:10px; margin-top:1rem;">
+              <button class="btn btn-primary" id="btnSubAnswer" onclick="Interview.evaluate()">Submit Answer</button>
+              <button class="btn btn-secondary" id="btnNextInt" style="display:none" onclick="Interview.start()">Next Question →</button>
+            </div>
+            <div id="interviewFeedback" style="margin-top:25px"></div>
+          </div>
         </div>
       </section>
 
@@ -357,7 +413,7 @@
 
       <!-- DEVELOPER / ABOUT -->
       <section class="page" id="page-developer" role="main" aria-label="About Developer">
-        <div class="dev-card glass"><div class="dev-avatar">YB</div><h2 class="text-2xl font-bold mb-1">Built by Yash Bhardwaj</h2><p style="color: var(--muted); margin-bottom: 1.5rem; max-width: 500px; margin-left:auto; margin-right:auto;">Full Stack Developer & AI Enthusiast. Built CareerOS AI to democratize career intelligence for every student and professional in India.</p><div class="dev-links"><a href="https://github.com" target="_blank" class="dev-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></a><a href="https://linkedin.com" target="_blank" class="dev-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a><a href="mailto:yash@example.com" class="dev-link" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a></div></div>
+        <div class="dev-card glass"><div class="dev-avatar">YB</div><h2 class="text-2xl font-bold mb-1">Built by Yash Bhardwaj</h2><p style="color: var(--muted); margin-bottom: 1.5rem; max-width: 500px; margin-left:auto; margin-right:auto;">Full Stack Developer & AI Enthusiast. Built CareerOS AI to democratize career intelligence for every student and professional in India.</p><div class="dev-links"><a href="https://github.com" target="_blank" class="dev-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></a><a href="https://linkedin.com" target="_blank" class="dev-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227.792 24 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a><a href="mailto:yash@example.com" class="dev-link" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a></div></div>
       </section>
 
       <!-- AUTH MODAL (Login/Signup) -->
@@ -369,26 +425,19 @@
       </div>
 
       <!-- BILLING MODAL (Stripe Checkout Redirect) -->
-      <div class="modal-backdrop" id="billingModal" role="dialog" aria-modal="true"><div class="modal-card glass-strong"><div class="p-6 text-center"><div style="font-size:48px; margin-bottom:1rem;">⚡</div><h2 class="text-xl font-bold mb-2">Redirecting to Secure Checkout...</h2><p style="color:var(--muted); margin-bottom:1.5rem;">You will be redirected to Stripe to complete your Pro subscription.</p><button class="btn btn-primary" onclick="Billing.openCheckout()">Continue to Payment</button><button class="btn btn-secondary mt-3" onclick="UI.closeModal('billingModal')">Cancel</button></div></div></div>
+      <div class="modal-backdrop" id="billingModal" role="dialog" aria-modal="true"><div class="modal-card glass-strong"><div class="p-6 text-center"><div style="font-size:48px; margin-bottom:1rem;">⚡</div><h2 class="text-xl font-bold mb-2">Redirecting to Secure Checkout...</h2><p style="color:var(--muted); margin-bottom:1.5rem;">You will be redirected to complete your Pro subscription.</p><button class="btn btn-primary" onclick="Billing.openCheckout()">Continue to Payment</button><button class="btn btn-secondary mt-3" onclick="UI.closeModal('billingModal')">Cancel</button></div></div></div>
     </div>
   </main>
 </div>
 
-<!-- JAVASCRIPT APP LOGIC (PART 2) -->
 <script>
-// =========================================================
-// CAREEROS AI — CORE APPLICATION LOGIC (PART 2)
-// Paste this inside <script> tag at end of body OR load as external app.js
-// =========================================================
-
 const $ = (sel, ctx=document) => ctx.querySelector(sel);
 const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
 
-// ---------- CONFIG & DEFAULTS ----------
 const CONFIG = {
   STORAGE_KEY: 'careeros_v2_state',
   DEFAULT_MODEL: 'nvidia/nemotron-3.5-lightning:free',
-  DEFAULT_KEY: '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', // Demo key
+  DEFAULT_KEY: '',
   LIMITS: {
     free: { resume: 3, chat: 6, build: 1, interview: 999 },
     pro:  { resume: 15, chat: 999, build: 10, interview: 999 }
@@ -404,24 +453,30 @@ const CONFIG = {
     {id:8, title:"Process Associate / Tech CSR", co:"Genpact", loc:"Noida / Delhi NCR", exp:"0-2 yrs", skills:"Voice/Chat Support, ITIL, Troubleshooting", cat:"bpo", url:"https://linkedin.com/jobs/search/?keywords=Tech%20Associate%20Noida"}
   ],
   REALTIME_APIS: {
-    weather: 'https://api.open-meteo.com/v1/forecast', // Free, no key needed
-    gold: 'https://api.metalpriceapi.com/v1/latest' // Requires key - MOCKED for demo
+    weather: 'https://api.open-meteo.com/v1/forecast',
+    gold: 'https://api.metalpriceapi.com/v1/latest'
   }
 };
 
-// ---------- STATE MANAGEMENT ----------
 const State = {
   data: null,
   init() {
-    try { this.data = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEY)) || null; } catch(e) { this.data = null; }
+    try {
+      const stored = localStorage.getItem(CONFIG.STORAGE_KEY);
+      this.data = stored ? JSON.parse(stored) : null;
+    } catch(e) {
+      console.warn('State parse error:', e);
+      this.data = null;
+    }
     if (!this.data) this.reset();
+    this.checkDailyReset();
     this.persist();
     this.hydrateUI();
   },
   reset() {
     this.data = {
       user: { id: 'guest_' + Date.now(), name: 'Guest', email: '', tier: 'free', avatar: 'AI', created: Date.now() },
-      sessions: [], // Chat sessions
+      sessions: [],
       currentSessionId: null,
       usage: { resume: 0, chat: 0, build: 0, interview: 0, lastReset: Date.now() },
       resumeText: '',
@@ -429,10 +484,15 @@ const State = {
       subscription: { status: 'free', expiry: 0, customerId: null }
     };
   },
-  persist() { localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(this.data)); },
+  persist() {
+    try {
+      localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(this.data));
+    } catch(e) {
+      console.error('Persist error:', e);
+    }
+  },
   getUser() { return this.data.user; },
   getTier() {
-    // Check expiry
     if (this.data.subscription.status === 'pro' && this.data.subscription.expiry < Date.now()) {
       this.data.subscription.status = 'free';
       this.persist();
@@ -440,13 +500,16 @@ const State = {
     return this.data.subscription.status;
   },
   getLimits() { return CONFIG.LIMITS[this.getTier()]; },
-  getUsage() {
-    // Daily reset logic
+  checkDailyReset() {
     const now = Date.now();
-    if (now - this.data.usage.lastReset > 86400000) {
+    const lastReset = this.data.usage?.lastReset || 0;
+    if (now - lastReset > 86400000) { // 24 hours
       this.data.usage = { resume: 0, chat: 0, build: 0, interview: 0, lastReset: now };
       this.persist();
     }
+  },
+  getUsage() {
+    this.checkDailyReset();
     return this.data.usage;
   },
   incrementUsage(key) {
@@ -492,18 +555,28 @@ const State = {
   }
 };
 
-// ---------- UI HELPERS ----------
 const UI = {
   toast(msg, type='info') {
     const c = $('#toast-container');
+    if (!c) return;
     const t = document.createElement('div');
     t.className = `toast ${type}`;
     t.innerHTML = `<span>${msg}</span>`;
     c.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(100%)'; setTimeout(() => t.remove(), 300); }, 3000);
+    setTimeout(() => {
+      t.style.opacity = '0';
+      t.style.transform = 'translateX(100%)';
+      setTimeout(() => t.remove(), 300);
+    }, 3000);
   },
-  openModal(id) { $('#' + id).classList.add('active'); document.body.style.overflow = 'hidden'; },
-  closeModal(id) { $('#' + id).classList.remove('active'); document.body.style.overflow = ''; },
+  openModal(id) {
+    const el = $('#' + id);
+    if (el) { el.classList.add('active'); document.body.style.overflow = 'hidden'; }
+  },
+  closeModal(id) {
+    const el = $('#' + id);
+    if (el) { el.classList.remove('active'); document.body.style.overflow = ''; }
+  },
   showPage(id) {
     $$('.page').forEach(p => p.classList.remove('active'));
     $$('.sidebar-btn').forEach(b => b.classList.remove('active'));
@@ -518,55 +591,70 @@ const UI = {
     const u = State.getUsage();
     const l = State.getLimits();
     const tier = State.getTier();
-    $('#chatUsageBadge').textContent = `${u.chat}/${l.chat === 999 ? '∞' : l.chat} Used`;
-    $('#resumeUsageBadge').textContent = `${u.resume}/${l.resume === 999 ? '∞' : l.resume} Used`;
-    $('#interviewUsageBadge').textContent = tier === 'pro' ? 'Unlimited' : `${u.interview}/${l.interview} Used`;
-    $('#chatLimitInfo').textContent = l.chat === 999 ? 'Unlimited' : `${l.chat} messages/session`;
+    const chatBadge = $('#chatUsageBadge');
+    const resumeBadge = $('#resumeUsageBadge');
+    const interviewBadge = $('#interviewUsageBadge');
+    const chatLimitInfo = $('#chatLimitInfo');
+
+    if (chatBadge) chatBadge.textContent = `${u.chat}/${l.chat === 999 ? '∞' : l.chat} Used`;
+    if (resumeBadge) resumeBadge.textContent = `${u.resume}/${l.resume === 999 ? '∞' : l.resume} Used`;
+    if (interviewBadge) interviewBadge.textContent = tier === 'pro' ? 'Unlimited' : `${u.interview}/${l.interview} Used`;
+    if (chatLimitInfo) chatLimitInfo.textContent = l.chat === 999 ? 'Unlimited' : `${l.chat} messages/session`;
   },
   renderDashboardStats() {
     const u = State.getUsage();
-    const s = State.data.sessions;
+    const s = State.data.sessions || [];
     const stats = [
       { id: 'statChats', val: s.length, label: 'AI Conversations' },
       { id: 'statResumes', val: u.resume, label: 'Resumes Analyzed' },
       { id: 'statInterviews', val: u.interview, label: 'Interviews Done' },
       { id: 'statBuilds', val: u.build, label: 'Resumes Built' }
     ];
-    $('#statsGrid').innerHTML = stats.map(st => `
-      <div class="stat-card glass"><div class="stat-value">${st.val}</div><div class="stat-label">${st.label}</div></div>
-    `).join('');
-    // Readiness Score
+    const statsGrid = $('#statsGrid');
+    if (statsGrid) {
+      statsGrid.innerHTML = stats.map(st => `
+        <div class="stat-card glass"><div class="stat-value">${st.val}</div><div class="stat-label">${st.label}</div></div>
+      `).join('');
+    }
     const score = Math.min(100, (s.length * 5) + (u.resume * 10) + (u.interview * 15) + (u.build * 10));
-    $('#readinessBar').style.width = score + '%';
-    $('#readinessScore').textContent = score + '%';
-    $('#readinessLabel').textContent = score > 80 ? 'Job Ready' : score > 50 ? 'Intermediate' : 'Beginner';
+    const readinessBar = $('#readinessBar');
+    const readinessScore = $('#readinessScore');
+    const readinessLabel = $('#readinessLabel');
+    if (readinessBar) readinessBar.style.width = score + '%';
+    if (readinessScore) readinessScore.textContent = score + '%';
+    if (readinessLabel) readinessLabel.textContent = score > 80 ? 'Job Ready' : score > 50 ? 'Intermediate' : 'Beginner';
   },
   setLoading(btn, isLoading) {
-    if(isLoading) { btn.disabled = true; btn.dataset.original = btn.innerHTML; btn.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`; }
-    else { btn.disabled = false; btn.innerHTML = btn.dataset.original || btn.innerHTML; }
+    if (!btn) return;
+    if(isLoading) {
+      btn.disabled = true;
+      btn.dataset.original = btn.innerHTML;
+      btn.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+    }
+    else {
+      btn.disabled = false;
+      btn.innerHTML = btn.dataset.original || btn.innerHTML;
+    }
   }
 };
 
-// ---------- NAVIGATION & AUTH GUARD ----------
 function navigate(pageId) {
-  // Auth Guard
   if (pageId !== 'dashboard' && pageId !== 'pricing' && pageId !== 'settings' && State.getUser().name === 'Guest') {
     UI.toast('Please sign in to access this feature.', 'info');
     UI.openModal('authModal');
     return;
   }
-  // Tier Guards
   const tier = State.getTier();
   if (pageId === 'pricing') { UI.showPage(pageId); toggleSidebar(false); return; }
 
   UI.showPage(pageId);
   toggleSidebar(false);
 
-  // Page Specific Inits
   if(pageId === 'dashboard') UI.renderDashboardStats();
   if(pageId === 'chat') Chat.init();
   if(pageId === 'jobs') Jobs.render();
   if(pageId === 'settings') Settings.load();
+  if(pageId === 'interview') Interview.resetView();
 }
 
 function toggleSidebar(open) {
@@ -576,28 +664,27 @@ function toggleSidebar(open) {
   else { sb.classList.remove('open'); ov.classList.remove('visible'); }
 }
 
-// Close sidebar on mobile link click
 $$('.sidebar-btn').forEach(b => b.addEventListener('click', () => toggleSidebar(false)));
 
-// ---------- AUTH MODULE ----------
 const Auth = {
   switchTab(tab) {
     $$('.auth-tab').forEach(t => t.classList.remove('active'));
     $$('#loginForm, #signupForm').forEach(f => f.classList.add('hidden'));
-    $('.auth-tab[onclick*="' + tab + '"]').classList.add('active');
-    $('#' + tab + 'Form').classList.remove('hidden');
+    const tabBtn = $(`.auth-tab[onclick*="${tab}"]`);
+    if (tabBtn) tabBtn.classList.add('active');
+    const form = $('#' + tab + 'Form');
+    if (form) form.classList.remove('hidden');
   },
   async handleLogin(e) {
     e.preventDefault();
     const btn = $('button[type=submit]', e.target);
     UI.setLoading(btn, true);
     const email = $('#loginEmail').value;
-    const pass = $('#loginPass').value; // In real app: hash & verify via backend
+    const pass = $('#loginPass').value;
 
-    // DEMO: Simulate backend check
     await new Promise(r => setTimeout(r, 800));
     if(email && pass.length >= 6) {
-      State.setUserSession({ name: email.split('@')[0], email, avatar: email.charAt(0).toUpperCase(), tier: 'free' }); // Default free
+      State.setUserSession({ name: email.split('@')[0], email, avatar: email.charAt(0).toUpperCase(), tier: 'free' });
     } else { UI.toast('Invalid credentials (Demo: any email + 6+ chars pass)', 'error'); }
     UI.setLoading(btn, false);
   },
@@ -618,24 +705,28 @@ const Auth = {
   logout() { State.logout(); }
 };
 
-// ---------- SETTINGS ----------
 const Settings = {
   load() {
-    $('#apiKeyInput').value = State.data.settings.apiKey;
-    $('#modelSelect').value = State.data.settings.model;
-    $('#privacyToggle').classList.toggle('active', State.data.settings.privacy);
+    const apiKeyInput = $('#apiKeyInput');
+    const modelSelect = $('#modelSelect');
+    const privacyToggle = $('#privacyToggle');
+    if (apiKeyInput) apiKeyInput.value = State.data.settings.apiKey;
+    if (modelSelect) modelSelect.value = State.data.settings.model;
+    if (privacyToggle) privacyToggle.classList.toggle('active', State.data.settings.privacy);
   },
   save() {
-    State.data.settings.apiKey = $('#apiKeyInput').value || CONFIG.DEFAULT_KEY;
-    State.data.settings.model = $('#modelSelect').value;
-    State.data.settings.privacy = $('#privacyToggle').classList.contains('active');
+    const apiKeyInput = $('#apiKeyInput');
+    const modelSelect = $('#modelSelect');
+    const privacyToggle = $('#privacyToggle');
+    State.data.settings.apiKey = (apiKeyInput?.value || '').trim() || CONFIG.DEFAULT_KEY;
+    State.data.settings.model = modelSelect?.value || CONFIG.DEFAULT_MODEL;
+    State.data.settings.privacy = privacyToggle?.classList.contains('active') || false;
     State.persist();
     UI.toast('Settings saved!', 'success');
   },
-  togglePrivacy() { $('#privacyToggle').classList.toggle('active'); }
+  togglePrivacy() { const el = $('#privacyToggle'); if (el) el.classList.toggle('active'); }
 };
 
-// ---------- CHAT MODULE ----------
 const Chat = {
   currentSession: null,
   attachedFile: null,
@@ -645,7 +736,8 @@ const Chat = {
     if (!this.currentSession) this.newSession();
     this.renderHistory();
     this.renderMessages();
-    $('#chatTextarea').focus();
+    const textarea = $('#chatTextarea');
+    if (textarea) textarea.focus();
   },
   newSession() {
     this.currentSession = { id: 'chat_' + Date.now(), messages: [], created: Date.now() };
@@ -657,7 +749,11 @@ const Chat = {
   },
   renderHistory() {
     const el = $('#chatHistoryList');
-    if(!State.data.sessions.length) { el.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:10px">No conversations yet</div>'; return; }
+    if (!el) return;
+    if(!State.data.sessions?.length) {
+      el.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:10px">No conversations yet</div>';
+      return;
+    }
     el.innerHTML = State.data.sessions.map(s => {
       const firstMsg = s.messages.find(m => m.role === 'user');
       const title = firstMsg ? firstMsg.content.slice(0, 30) + '...' : 'New Chat';
@@ -672,6 +768,7 @@ const Chat = {
   },
   renderMessages() {
     const el = $('#messagesArea');
+    if (!el) return;
     if(!this.currentSession) { this.newSession(); return; }
     if(!this.currentSession.messages.length) {
       el.innerHTML = `<div class="message ai"><div class="msg-avatar avatar-ai">✦</div><div class="msg-bubble prose">Hello! I am your AI Career Mentor powered by <b>NVIDIA Nemotron</b>.<br><br>Ask me about:<br>• Resume evaluation & ATS optimization<br>• Mock interview drills (STAR feedback)<br>• Technical concepts & troubleshooting<br>• Career transitions & salary guidance<br>• <b>Real-time data:</b> Weather, Gold rates, Stocks<br><br><i>Upload your resume (Drag & Drop in Resume Lab) to personalize my answers.</i></div></div>`;
@@ -691,66 +788,71 @@ const Chat = {
 
   handleKeydown(e) {
     if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.send(); }
-    // Auto-resize
     const ta = e.target; ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 200) + 'px';
   },
 
-  attachFile() { $('#resumeFileInput').click(); },
+  attachFile() { const el = $('#resumeFileInput'); if (el) el.click(); },
   handleFile(file) {
     if(!file) return;
     this.attachedFile = file;
-    $('#attachmentPreview').innerHTML = `📎 ${file.name} <button onclick="Chat.removeFile()">×</button>`;
-    $('#attachmentPreview').style.display = 'flex';
+    const preview = $('#attachmentPreview');
+    if (preview) {
+      preview.innerHTML = `📎 ${file.name} <button onclick="Chat.removeFile()">×</button>`;
+      preview.style.display = 'flex';
+    }
     UI.toast('File attached. Send message to analyze.', 'info');
   },
-  removeFile() { this.attachedFile = null; $('#attachmentPreview').style.display = 'none'; },
+  removeFile() { this.attachedFile = null; const preview = $('#attachmentPreview'); if (preview) preview.style.display = 'none'; },
 
-  quickPrompt(text) { navigate('chat'); setTimeout(() => { $('#chatTextarea').value = text; this.send(); }, 100); },
+  quickPrompt(text) { navigate('chat'); setTimeout(() => { const ta = $('#chatTextarea'); if (ta) ta.value = text; this.send(); }, 100); },
 
   async send() {
     const input = $('#chatTextarea');
-    const text = input.value.trim();
+    const sendBtn = $('#chatSendBtn');
+    const text = input?.value?.trim() || '';
     if(!text && !this.attachedFile) return;
     if(this.isStreaming) return;
 
-    // Limit Check
     if(State.getTier() === 'free' && !State.canUse('chat')) {
       UI.toast('Free limit reached (6 msgs/session). Upgrade for unlimited.', 'error');
-      $('#chatUsageWarn').style.display = 'block';
+      const warn = $('#chatUsageWarn');
+      if (warn) warn.style.display = 'block';
       return;
     }
 
     let userContent = text;
     let fileContext = '';
 
-    // Process Attached File
     if(this.attachedFile) {
       UI.toast('Reading file...', 'info');
-      try { fileContext = await FileParser.extract(this.attachedFile); State.data.resumeText = fileContext; State.persist(); }
+      try {
+        fileContext = await FileParser.extract(this.attachedFile);
+        State.data.resumeText = fileContext;
+        State.persist();
+      }
       catch(err) { UI.toast('Failed to read file: ' + err.message, 'error'); return; }
-      userText += '\n\n[ATTACHED RESUME]\n' + fileContext.slice(0, 3000);
+      userContent += '\n\n[ATTACHED RESUME]\n' + fileContext.slice(0, 3000);
       this.removeFile();
     }
-    // Inject Resume Context if exists
     else if(State.data.resumeText) {
       userContent += '\n\n[CANDIDATE RESUME CONTEXT]\n' + State.data.resumeText.slice(0, 2000);
     }
 
-    // Add User Message
     this.currentSession.messages.push({ role: 'user', content: text });
     this.renderMessages();
-    input.value = ''; input.style.height = 'auto';
+    if (input) { input.value = ''; input.style.height = 'auto'; }
     State.incrementUsage('chat');
 
-    // Show Typing Indicator
     this.isStreaming = true;
     const thinkingId = 'msg_thinking_' + Date.now();
-    $('#messagesArea').innerHTML += `<div class="message ai" id="${thinkingId}"><div class="msg-avatar avatar-ai">✦</div><div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
-    $('#messagesArea').scrollTop = $('#messagesArea').scrollHeight;
-    $('#chatSendBtn').disabled = true;
+    const messagesArea = $('#messagesArea');
+    if (messagesArea) {
+      messagesArea.innerHTML += `<div class="message ai" id="${thinkingId}"><div class="msg-avatar avatar-ai">✦</div><div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
+      messagesArea.scrollTop = messagesArea.scrollHeight;
+    }
+    if (sendBtn) sendBtn.disabled = true;
 
     try {
-      // Check for Real-time Data Triggers
       let enhancedPrompt = userContent;
       if(text.match(/\b(weather|temperature|forecast)\b/i)) enhancedPrompt = await this.injectWeather(text);
       if(text.match(/\b(gold|silver|metal rate|commodity)\b/i)) enhancedPrompt = await this.injectGoldRate(text);
@@ -760,24 +862,24 @@ const Chat = {
         ...this.currentSession.messages.slice(-6).map(m => ({ role: m.role, content: m.role === 'user' && m.content === text ? enhancedPrompt : m.content }))
       ]);
 
-      $('#' + thinkingId).remove();
+      const thinkingEl = $('#' + thinkingId);
+      if (thinkingEl) thinkingEl.remove();
       this.currentSession.messages.push({ role: 'assistant', content: reply });
       State.persist();
       this.renderMessages();
     } catch(err) {
-      $('#' + thinkingId).remove();
+      const thinkingEl = $('#' + thinkingId);
+      if (thinkingEl) thinkingEl.remove();
       this.currentSession.messages.push({ role: 'assistant', content: '⚠️ Error: ' + err.message });
       this.renderMessages();
     } finally {
       this.isStreaming = false;
-      $('#chatSendBtn').disabled = false;
+      if (sendBtn) sendBtn.disabled = false;
     }
   },
 
-  // Real-time Data Injection (Mocked for Demo - Replace with real API calls in production)
   async injectWeather(query) {
     try {
-      // Demo: Simulate API call. In production: fetch(CONFIG.REALTIME_APIS.weather + '?latitude=...&current_weather=true')
       const city = query.match(/in\s+([a-zA-Z\s]+)/i)?.[1] || 'Hyderabad';
       const mock = `Current weather in ${city}: 32°C, Partly Cloudy, Humidity 65%, Wind 12 km/h.`;
       return `${query}\n\n[REAL-TIME DATA INJECTED]\n${mock}`;
@@ -785,21 +887,21 @@ const Chat = {
   },
   async injectGoldRate(query) {
     try {
-      // Demo: Simulate API. In production: fetch MetalPriceAPI with API Key from backend.
       const mock = `Current Gold Rate (India, 24K): ₹7,350/gm. Silver: ₹85/gm. (Source: MCX/IBJA approx)`;
       return `${query}\n\n[REAL-TIME DATA INJECTED]\n${mock}`;
     } catch(e) { return query; }
   }
 };
 
-// ---------- RESUME MODULE ----------
 const Resume = {
   currentFile: null,
   handleFile(file) {
     if(!file) return;
     this.currentFile = file;
-    $('#fileNameDisplay').textContent = '✅ ' + file.name + ' loaded (' + (file.size/1024).toFixed(1) + ' KB)';
-    $('#resumeActions').style.display = 'flex';
+    const fileNameDisplay = $('#fileNameDisplay');
+    const resumeActions = $('#resumeActions');
+    if (fileNameDisplay) fileNameDisplay.textContent = '✅ ' + file.name + ' loaded (' + (file.size/1024).toFixed(1) + ' KB)';
+    if (resumeActions) resumeActions.style.display = 'flex';
     UI.toast('Resume loaded. Ready to analyze.', 'success');
   },
   async analyze() {
@@ -808,7 +910,8 @@ const Resume = {
 
     const btn = $('#resumeActions .btn-primary');
     UI.setLoading(btn, true);
-    $('#analysisOutput').textContent = '🧠 Nemotron is analyzing your resume against JD...';
+    const analysisOutput = $('#analysisOutput');
+    if (analysisOutput) analysisOutput.textContent = '🧠 Nemotron is analyzing your resume against JD...';
 
     try {
       const text = await FileParser.extract(this.currentFile);
@@ -825,10 +928,13 @@ RESUME:\n${text}\n\n${jd ? 'JOB DESCRIPTION:\n' + jd : ''}\n\nOUTPUT FORMAT:
 5. **TAILORED SUMMARY**: (Rewritten professional summary for this JD)`;
 
       const result = await AI.call([{ role: 'user', content: prompt }]);
-      $('#analysisOutput').innerHTML = DOMPurify.sanitize(marked.parse(result));
+      if (analysisOutput) analysisOutput.innerHTML = DOMPurify.sanitize(marked.parse(result));
       State.incrementUsage('resume');
       UI.toast('Analysis complete!', 'success');
-    } catch(err) { $('#analysisOutput').textContent = '⚠️ ' + err.message; UI.toast(err.message, 'error'); }
+    } catch(err) {
+      if (analysisOutput) analysisOutput.textContent = '⚠️ ' + err.message;
+      UI.toast(err.message, 'error');
+    }
     finally { UI.setLoading(btn, false); }
   },
   async generateCoverLetter() {
@@ -839,53 +945,81 @@ RESUME:\n${text}\n\n${jd ? 'JOB DESCRIPTION:\n' + jd : ''}\n\nOUTPUT FORMAT:
 
     const btn = $('#resumeActions .btn-secondary:first-of-type');
     UI.setLoading(btn, true);
-    $('#analysisOutput').textContent = '✍️ Writing tailored cover letter...';
+    const analysisOutput = $('#analysisOutput');
+    if (analysisOutput) analysisOutput.textContent = '✍️ Writing tailored cover letter...';
 
     try {
       const prompt = `Write a professional, tailored cover letter. Do not invent experience.
 RESUME:\n${State.data.resumeText}\n\nJOB DESCRIPTION:\n${jd}`;
       const result = await AI.call([{ role: 'user', content: prompt }]);
-      $('#analysisOutput').innerHTML = DOMPurify.sanitize(marked.parse(result));
+      if (analysisOutput) analysisOutput.innerHTML = DOMPurify.sanitize(marked.parse(result));
       State.incrementUsage('build');
       UI.toast('Cover letter generated!', 'success');
-    } catch(err) { $('#analysisOutput').textContent = '⚠️ ' + err.message; }
+    } catch(err) { if (analysisOutput) analysisOutput.textContent = '⚠️ ' + err.message; }
     finally { UI.setLoading(btn, false); }
   },
   async buildResume() {
     if(!State.canUse('build')) { UI.toast('Daily build limit reached (1/day Free, 10/day Pro).', 'error'); return; }
-    // Simplified: Redirect to Chat with prompt
     navigate('chat');
     setTimeout(() => Chat.quickPrompt('Build a professional ATS-optimized resume for me based on my uploaded resume. Output clean Markdown.'), 200);
   }
 };
 
-// ---------- INTERVIEW MODULE ----------
 const Interview = {
   currentQ: '',
+  resetView() {
+    const setup = $('#interviewSetup');
+    const area = $('#interviewArea');
+    if (setup) setup.style.display = 'block';
+    if (area) area.style.display = 'none';
+    const question = $('#interviewQuestion');
+    const answer = $('#interviewAnswer');
+    const feedback = $('#interviewFeedback');
+    const btnSub = $('#btnSubAnswer');
+    const btnNext = $('#btnNextInt');
+    if (question) question.textContent = '';
+    if (answer) answer.value = '';
+    if (feedback) feedback.innerHTML = '';
+    if (btnSub) btnSub.disabled = false;
+    if (btnNext) btnNext.style.display = 'none';
+  },
   async start() {
     const role = $('#interviewType').value;
-    $('#interviewSetup').style.display = 'none';
-    $('#interviewArea').style.display = 'block';
-    $('#interviewQuestion').textContent = 'Generating scenario...';
-    $('#interviewAnswer').value = '';
-    $('#interviewFeedback').innerHTML = '';
-    $('#btnSubAnswer').disabled = true;
-    $('#btnNextInt').style.display = 'none';
+    const setup = $('#interviewSetup');
+    const area = $('#interviewArea');
+    const question = $('#interviewQuestion');
+    const answer = $('#interviewAnswer');
+    const feedback = $('#interviewFeedback');
+    const btnSub = $('#btnSubAnswer');
+    const btnNext = $('#btnNextInt');
+
+    if (setup) setup.style.display = 'none';
+    if (area) area.style.display = 'block';
+    if (question) question.textContent = 'Generating scenario...';
+    if (answer) answer.value = '';
+    if (feedback) feedback.innerHTML = '';
+    if (btnSub) btnSub.disabled = true;
+    if (btnNext) btnNext.style.display = 'none';
 
     try {
       const prompt = `You are a Senior Hiring Manager interviewing for: "${role}". Generate ONE realistic technical/situational question. Do not give answers. Output ONLY the question.`;
       this.currentQ = await AI.call([{ role: 'user', content: prompt }]);
-      $('#interviewQuestion').textContent = this.currentQ;
-      $('#btnSubAnswer').disabled = false;
-    } catch(e) { $('#interviewQuestion').textContent = '⚠️ ' + e.message; $('#btnSubAnswer').disabled = false; }
+      if (question) question.textContent = this.currentQ;
+      if (btnSub) btnSub.disabled = false;
+    } catch(e) {
+      if (question) question.textContent = '⚠️ ' + e.message;
+      if (btnSub) btnSub.disabled = false;
+    }
   },
   async evaluate() {
     const ans = $('#interviewAnswer').value.trim();
     if(!ans) { UI.toast('Please type your answer.', 'error'); return; }
     if(!State.canUse('interview')) { UI.toast('Limit reached.', 'error'); return; }
 
-    $('#interviewFeedback').innerHTML = `<div class="feature-card glass">Evaluating with STAR criteria...</div>`;
-    $('#btnSubAnswer').disabled = true;
+    const feedback = $('#interviewFeedback');
+    const btnSub = $('#btnSubAnswer');
+    if (feedback) feedback.innerHTML = `<div class="feature-card glass">Evaluating with STAR criteria...</div>`;
+    if (btnSub) btnSub.disabled = true;
 
     try {
       const prompt = `Evaluate this interview answer using STAR method.
@@ -899,17 +1033,19 @@ OUTPUT:
 4. **IMPROVEMENTS**: (Specific gaps)
 5. **MODEL ANSWER**: (High-impact STAR response)`;
 
-      const feedback = await AI.call([{ role: 'user', content: prompt }]);
-      $('#interviewFeedback').innerHTML = `<div class="feedback-card">${DOMPurify.sanitize(marked.parse(feedback))}</div>`;
-      $('#btnNextInt').style.display = 'inline-flex';
+      const result = await AI.call([{ role: 'user', content: prompt }]);
+      if (feedback) feedback.innerHTML = `<div class="feedback-card">${DOMPurify.sanitize(marked.parse(result))}</div>`;
+      const btnNext = $('#btnNextInt');
+      if (btnNext) btnNext.style.display = 'inline-flex';
       State.incrementUsage('interview');
       UI.toast('Evaluation complete!', 'success');
-    } catch(e) { $('#interviewFeedback').innerHTML = `<div class="feedback-card" style="border-color:var(--danger)">⚠️ ${e.message}</div>`; }
-    finally { $('#btnSubAnswer').disabled = false; }
+    } catch(e) {
+      if (feedback) feedback.innerHTML = `<div class="feedback-card" style="border-color:var(--danger)">⚠️ ${e.message}</div>`;
+    }
+    finally { if (btnSub) btnSub.disabled = false; }
   }
 };
 
-// ---------- JOBS MODULE ----------
 const Jobs = {
   render() {
     const q = ($('#jobQuery').value || '').toLowerCase();
@@ -922,7 +1058,11 @@ const Jobs = {
     );
 
     const el = $('#jobsResult');
-    if(!matches.length) { el.innerHTML = '<div class="feature-card glass" style="grid-column:1/-1; text-align:center;"><p>No matches. Try broader filters.</p></div>'; return; }
+    if (!el) return;
+    if(!matches.length) {
+      el.innerHTML = '<div class="feature-card glass" style="grid-column:1/-1; text-align:center;"><p>No matches. Try broader filters.</p></div>';
+      return;
+    }
 
     el.innerHTML = matches.map(j => `
       <div class="job-card glass">
@@ -932,12 +1072,11 @@ const Jobs = {
         <div class="job-actions"><a href="${j.url}" target="_blank" class="btn btn-secondary" style="flex:1; justify-content:center;">Apply on LinkedIn →</a></div>
       </div>
     `).join('');
-    State.incrementUsage('resume'); // Count search as activity
+    // REMOVED: State.incrementUsage('resume') - this was incorrectly incrementing resume usage
   },
   search() { this.render(); }
 };
 
-// ---------- FILE PARSER ----------
 const FileParser = {
   async extract(file) {
     const ext = file.name.split('.').pop().toLowerCase();
@@ -965,7 +1104,6 @@ const FileParser = {
   }
 };
 
-// ---------- AI DISPATCHER (OpenRouter) ----------
 const AI = {
   async call(messages) {
     const key = State.data.settings.apiKey || CONFIG.DEFAULT_KEY;
@@ -974,57 +1112,45 @@ const AI = {
 
     for(const m of modelsToTry) {
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
         const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
           method: 'POST',
-          headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': window.location.origin, 'X-Title': 'CareerOS AI' },
-          body: JSON.stringify({ model: m, messages, temperature: 0.7, max_tokens: 1500 })
+          headers: {
+            'Authorization': 'Bearer ' + key,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': window.location.origin,
+            'X-Title': 'CareerOS AI'
+          },
+          body: JSON.stringify({ model: m, messages, temperature: 0.7, max_tokens: 1500 }),
+          signal: controller.signal
         });
+        clearTimeout(timeoutId);
+
         const data = await res.json();
         if(data.choices?.[0]?.message?.content) return data.choices[0].message.content.trim();
         if(data.error) throw new Error(data.error.message);
-      } catch(e) { console.warn('Model failed:', m, e); }
+      } catch(e) {
+        console.warn('Model failed:', m, e);
+        if (e.name === 'AbortError') throw new Error('Request timeout - model took too long');
+      }
     }
     throw new Error('All AI models unavailable. Check API key / Network.');
   }
 };
 
-// ---------- BILLING (Stripe Integration Stub) ----------
 const Billing = {
-  // IMPLEMENTATION GUIDE:
-  // 1. Create a Vercel/Netlify Serverless Function: /api/create-checkout
-  // 2. Function receives userId, creates Stripe Checkout Session (mode: subscription, price_id: price_pro_monthly)
-  // 3. Returns { sessionId }.
-  // 4. Frontend: stripe.redirectToCheckout({ sessionId })
-
   async openCheckout() {
     UI.toast('Preparing secure checkout...', 'info');
     UI.openModal('billingModal');
 
-    // DEMO MODE: Simulate success immediately
-    // REMOVE THIS BLOCK IN PRODUCTION
     setTimeout(() => {
       UI.closeModal('billingModal');
       this.handleSuccess();
     }, 1500);
-    return;
-
-    // PRODUCTION CODE:
-    /*
-    try {
-      const res = await fetch('/api/create-checkout', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ userId: State.getUser().id }) });
-      const { sessionId, url } = await res.json();
-      if(url) window.location.href = url; // Redirect
-      else if(sessionId && window.Stripe) {
-        const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY');
-        const { error } = await stripe.redirectToCheckout({ sessionId });
-        if(error) throw error;
-      }
-    } catch(e) { UI.toast('Checkout failed: ' + e.message, 'error'); UI.closeModal('billingModal'); }
-    */
   },
   handleSuccess() {
-    // Called via Webhook in production (Stripe -> Your Backend -> Update DB -> Trigger Frontend Update via SSE/Polling)
-    // For Demo/LocalStorage Sim:
     State.data.subscription = { status: 'pro', expiry: Date.now() + 30*86400000, customerId: 'cus_demo_' + Date.now() };
     State.persist();
     State.hydrateUI();
@@ -1033,34 +1159,30 @@ const Billing = {
   }
 };
 
-// ---------- GLOBAL INIT ----------
 document.addEventListener('DOMContentLoaded', () => {
-  // PDF.js Worker
   if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-  // Drag & Drop for Resume Page
   const dz = $('#dropZone');
-  ['dragenter','dragover'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.add('drag-active'); }));
-  ['dragleave','drop'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.remove('drag-active'); }));
-  dz.addEventListener('drop', ev => { if(ev.dataTransfer.files.length) Resume.handleFile(ev.dataTransfer.files[0]); });
+  if (dz) {
+    ['dragenter','dragover'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.add('drag-active'); }));
+    ['dragleave','drop'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.remove('drag-active'); }));
+    dz.addEventListener('drop', ev => { if(ev.dataTransfer.files.length) Resume.handleFile(ev.dataTransfer.files[0]); });
+  }
 
-  // Global Search (Simple Filter)
-  $('#globalSearch').addEventListener('input', (e) => {
+  $('#globalSearch')?.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
-    // Could filter jobs list or navigate
+    // Future: implement global search
   });
 
-  // Keyboard Shortcuts
   document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape') { UI.closeModal('authModal'); UI.closeModal('billingModal'); toggleSidebar(false); }
-    if(e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); $('#globalSearch').focus(); }
+    if(e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); const gs = $('#globalSearch'); if (gs) gs.focus(); }
   });
 
   State.init();
   UI.toast('CareerOS AI Loaded. Nemotron Engine Ready.', 'success');
 });
 
-// Expose globally for inline onclick handlers
 window.navigate = navigate;
 window.toggleSidebar = toggleSidebar;
 window.Auth = Auth;
@@ -1072,7 +1194,6 @@ window.Settings = Settings;
 window.Billing = Billing;
 window.UI = UI;
 window.State = State;
-
 </script>
 </body>
 </html>
